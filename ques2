@@ -1,0 +1,66 @@
+
+using System;
+using System.Data.SqlClient;
+
+class QUES2
+{
+    static void Main2()
+    {
+        // Connection String
+        string conStr = @"Data Source=localhost;
+                          Initial Catalog=CollegeDB1;
+                          Integrated Security=True";
+
+        // Create SqlConnection object
+        SqlConnection con = new SqlConnection(conStr);
+
+        try
+        {
+            // Open database connection
+            con.Open();
+
+            Console.WriteLine("Database Connected Successfully!");
+
+            // Take student details
+            Console.Write("Enter Student Name: ");
+            string name = Console.ReadLine();
+
+            Console.Write("Enter Student Age: ");
+            int age = Convert.ToInt32(Console.ReadLine());
+
+            // Insert query
+            string query = "INSERT INTO Student (Name, Age) VALUES (@Name, @Age)";
+
+            // Create SqlCommand object
+            SqlCommand cmd = new SqlCommand(query, con);
+
+            // Add parameters
+            cmd.Parameters.AddWithValue("@Name", name);
+            cmd.Parameters.AddWithValue("@Age", age);
+
+            // Execute insert query
+            int result = cmd.ExecuteNonQuery();
+
+            if (result > 0)
+            {
+                Console.WriteLine("Student Record Inserted Successfully!");
+            }
+            else
+            {
+                Console.WriteLine("Record Not Inserted.");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error: " + ex.Message);
+        }
+        finally
+        {
+            // Close connection
+            con.Close();
+        }
+
+        Console.ReadKey();
+    }
+}
+
