@@ -1,0 +1,73 @@
+
+using System;
+using System.Data;
+using System.Data.SqlClient;
+
+class ques6
+{
+    static void Main6()
+    {
+        // Connection String
+        string conStr = @"Data Source=localhost;
+        Initial Catalog=CollegeDB1;
+        Integrated Security=True";
+
+        try
+        {
+            // Create SqlConnection object
+            SqlConnection con = new SqlConnection(conStr);
+
+            // Create DataAdapter
+            SqlDataAdapter da = new SqlDataAdapter(
+                "SELECT * FROM Student", con);
+
+            // Create DataSet
+            DataSet ds = new DataSet();
+
+            // Fill DataSet
+            da.Fill(ds, "Student");
+
+            // Take input from user
+            Console.Write("Enter Student ID: ");
+            int id = Convert.ToInt32(Console.ReadLine());
+
+            Console.Write("Enter Student Name: ");
+            string name = Console.ReadLine();
+
+            Console.Write("Enter Student Age: ");
+            int age = Convert.ToInt32(Console.ReadLine());
+
+            Console.Write("Enter Student Course: ");
+            string course = Console.ReadLine();
+
+            // Access DataTable
+            DataTable dt = ds.Tables["Student"];
+
+            // Create new DataRow
+            DataRow row = dt.NewRow();
+
+            row["StudentId"] = id;
+            row["Name"] = name;
+            row["Age"] = age;
+            row["Course"] = course;
+
+            // Add row to DataTable
+            dt.Rows.Add(row);
+
+            // Create CommandBuilder
+            SqlCommandBuilder cb = new SqlCommandBuilder(da);
+
+            // Update database
+            da.Update(ds, "Student");
+
+            Console.WriteLine("Student Record Inserted Successfully!");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error: " + ex.Message);
+        }
+
+        Console.ReadKey();
+    }
+}
+
